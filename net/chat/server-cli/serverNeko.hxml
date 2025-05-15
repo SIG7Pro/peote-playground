@@ -1,0 +1,7 @@
+-cp src
+-main PeoteChatServer
+-lib peote-net tink_cli
+-dce full
+
+-neko build/neko/peotechatserver.n
+
