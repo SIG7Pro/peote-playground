@@ -3,7 +3,7 @@ package view;
 import peote.view.PeoteView;
 
 import view.ui.Ui;
-import view.ui.LogArea;
+import view.ui.Log;
 
 import net.Server;
 
@@ -12,7 +12,7 @@ class ServerView {
 	var peoteView:PeoteView;
 	var ui:Ui;
 	
-	var logArea:LogArea;
+	var log:Log;
 
 	public function new(peoteView:PeoteView, x:Int, y:Int, width:Int, height:Int, offline:Bool = false)
 	{
@@ -24,23 +24,15 @@ class ServerView {
 
 		// --------- logger ----------
 		
-		logArea = new LogArea(0, 0, width, height);
-		ui.add(logArea);		
+		log = new Log(0, 0, width, height);
+		ui.add(log);		
 		
 
 		// --------------------------------
 		// ---------- network -------------
 		// --------------------------------
-
-		var host:String = haxe.macro.Compiler.getDefine("host");
-		if (host == null) host = "localhost";
-		var port:Null<Int> = Std.parseInt(haxe.macro.Compiler.getDefine("port"));
-		if (port==null) port = 7680;
-		var channel:String = haxe.macro.Compiler.getDefine("channel");
-		if (channel == null) channel = "peotechat";
 		
-		logArea.log('try to connect to $host:$port\ncreate channel "$channel" ...');
-		new Server(host, port, channel, logArea.log, offline);
+		new Server(Config.host, Config.port, Config.channel, log.say, offline);
 		
 	}
 
@@ -51,9 +43,9 @@ class ServerView {
 			ui.width = w;
 			ui.height = h;
 
-			logArea.width = w;
-			logArea.height = h;
-			logArea.updateLayout();
+			log.width = w;
+			log.height = h;
+			log.updateLayout();
 		}
 	}
 } 
